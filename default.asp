@@ -18,8 +18,8 @@ Set kset=bag.Execute("SELECT * FROM ogrenci") %>
 <% Do While Not kset.EOF%>
 <tr>
 <td><%=i%></td>
-<td><%=kset("ad")</td>
-<td><%=kset("soyad")</td>
+<td><%=kset("ad")></td>
+<td><%=kset("soyad")></td>
 <td><a href="kayit_duzenle.asp?id=<%=kset("id")">DÜZENLE</a> | <a href="kayit_sil.asp?id=<%=kset("id")">SİL</a></td>
 </TR>
 <%kset.Movenext%>
