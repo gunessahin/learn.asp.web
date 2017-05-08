@@ -6,7 +6,7 @@
 </head>
 <body>
     
-    <a href="create.asp"> List </a> </br>
+    <a href="list.asp"> List </a> </br>
     <a href="update"> Update </a> </br>
     <a href="delete.asp"> Delete </a> </br>
     <a href="list.asp"> List </a> </br>
