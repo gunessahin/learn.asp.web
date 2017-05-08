@@ -1,30 +1,55 @@
-﻿<%@LANGUAGE="VBSCRIPT" CODEPAGE="1254"%>
+﻿<%
+    ' Kayıt Bilgileri Alınıyor
+    ad = Request.Form("isim")
+    soyad = Request.Form("soyad")    
+%>
+
 <%
-Veri_yolu=Server.MapPath("Veritabani.mdb")
-Bcumle="DRIVER={Microsoft Access Driver(*.mdb)};DBQ=" & Veri_yolu
-Set bag=Server.CreateObject("ADODB.Connection")
-bag.Open(Bcumle)
-Set kset=Server.CreateObject("ADODB.Recordset")
-sql="SELECT * FROM ögrenci"
-kset.open sql, bag, 1, 3 
+    databaseAdi = "veri.mdb"
+    databaseYolu = "/db/"
+    databaseTamYol = Server.MapPath(databaseYolu & databaseAdi )
+    
+    'Sağlayıcı
+    connectionProvider = "Provider=Microsoft.Jet.OLEDB.4.0;"          
+    connectionString = connectionProvider & "Data Source=" & databaseTamYol
+    
+    'Bağlan Database
+    Set conn=Server.CreateObject("ADODB.Connection")
+%>
 
-ad=Request.Form("ad")
-soyad=Request.Form("soyad")
+<%
+    ' İşlemlere Başla
 
-if ad="" or soyad=""
-Response.Write "<script language='JavaScript'>alert('Bilgileri eksiksiz doldurunuz...'):history.back(-1);</script>"
-Response.End
-end if
+    ' İlk Defa Bağlanıyr isem bağlantımı açmalıyım
+    conn.Open connectionString
+    
+    ' Bağlantı Kayıt Nesnesi
+    set rs =  Server.CreateObject("ADODB.recordset")    
+            
+    ' Kayıt
+    sorgu = "SELECT * FROM Kisi"
 
-kset.AddNew
-kset("ad")=ad
-kset("soyad")=soyad
+    ' Çalıştır
+    rs.Open sorgu, conn ,1  , 3'Bağlantı Açıldı        
+    
+    ' Yeni Kayıt
+    rs.AddNew
 
-kset.Update
-kset.close
-set kset=nothing
-bag.close
-bag=nothing
+    ' Veri Alanlarını Tanımla
+    rs("Ad") = ad
+    rs("Soyad") = soyad
 
-Response.Redirect("default.asp")
+    ' Veriyi Tabloya aktar
+    rs.Update
+    
+    ' Tüm işlemler tamamlandı
+    
+    ' Kayıt Setimi Kapat
+    rs.Close
+
+    ' Bağlantımı Kapat
+    conn.Close
+
+    ' Ana Sayfaya Geri Dönüş
+    Response.Redirect("/")
 %>

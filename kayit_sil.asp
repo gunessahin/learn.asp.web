@@ -1,14 +1,43 @@
-﻿<%@LANGUAGE="VBSCRIPT" CODEPAGE="1254"%>
+﻿<%
+    ' Kayıt Bilgileri Alınıyor
+    id = Request.QueryString("id")
+%>
+
 <%
-id=Request.Form("id")
-Veri_yolu=Server.MapPath("Veritabani.mdb")
-Bcumle="DRIVER={Microsoft Access Driver(*.mdb)};DBQ=" & Veri_yolu
-Set bag=Server.CreateObject("ADODB.Connection")
-bag.Open(Bcumle)
-Set kset=Server.CreateObject("ADODB.Recordset")
-sql="DELETE * FROM ögrenci WHERE id=" & id
-Set kset=bag.execute(sql
-set kset=Nothing
-bag.close
-set bag=nothing
+    databaseAdi = "veri.mdb"
+    databaseYolu = "/db/"
+    databaseTamYol = Server.MapPath(databaseYolu & databaseAdi )
+    
+    'Sağlayıcı
+    connectionProvider = "Provider=Microsoft.Jet.OLEDB.4.0;"          
+    connectionString = connectionProvider & "Data Source=" & databaseTamYol
+    
+    'Bağlan Database
+    Set conn=Server.CreateObject("ADODB.Connection")
+%>
+
+<%
+    ' İşlemlere Başla
+
+    ' İlk Defa Bağlanıyr isem bağlantımı açmalıyım
+    conn.Open connectionString
+    
+    ' Bağlantı Kayıt Nesnesi
+    set rs =  Server.CreateObject("ADODB.recordset")    
+            
+    ' Sorgu
+    sorgu = "DELETE * FROM Kisi Where id=" & id
+
+    ' Çalıştır
+    rs.Open sorgu, conn 'Bağlantı Açıldı        
+    
+    ' Kayıt Sil
+    
+    ' Tüm işlemler tamamlandı    
+
+    ' Bağlantımı Kapat
+    conn.Close
+
+    ' Ana Sayfaya Geri Dönüş
+    Response.Redirect("/")
 %>
