@@ -1,6 +1,6 @@
 ﻿<%id=Request.QueryString("id")
 
-Veri_yolu=Server.MapPath("db/veri_tabani.mdb")
+Veri_yolu=Server.MapPath("Veritabani.mdb")
 Bcumle="DRIVER={Microsoft Access Driver(*.mdb)};DBQ=" & Veri_yolu
 Set bag=Server.CreateObject("ADODB.Connection")
 bag.Open(Bcumle)
